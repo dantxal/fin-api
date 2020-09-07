@@ -32,6 +32,20 @@ class TransactionsRepository {
     };
   }
 
+  public create({ title, type, value }: CreateTransactionDTO): Transaction {
+    const transaction = {
+      id: v4(),
+      title,
+      type,
+      value,
+    };
+
+    this.transactions.push(transaction);
+    this.calculateBalance();
+
+    return transaction;
+  }
+
   public getBalance(): number {
     return this.balance.total;
   }
@@ -81,20 +95,6 @@ class TransactionsRepository {
       .reduce((prevValue: number, currValue: number) => prevValue + currValue);
 
     this.balance.income = income;
-  }
-
-  public create({ title, type, value }: CreateTransactionDTO): Transaction {
-    const transaction = {
-      id: v4(),
-      title,
-      type,
-      value,
-    };
-
-    this.transactions.push(transaction);
-    this.calculateBalance();
-
-    return transaction;
   }
 }
 
